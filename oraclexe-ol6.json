@@ -3,7 +3,7 @@
     {
       "type": "docker",
       "name": "oraclexe",
-      "image": "oraclelinux:6",
+      "image": "oraclelinux:6-slim",
       "run_command": [
         "-d", "-i", "-P", "-v", "/tmp/container/ol6:/var/cache/yum", "--shm-size=1g",
         "--memory=1g", "--memory-swap=2g","-t", "{{.Image}}", "/bin/sh", "-l"

@@ -9,15 +9,13 @@ env:
     - ORACLE_DOWNLOAD_DIR=stage
     - ORACLE_FILE=oracle11g/xe/oracle-xe-11.2.0-1.0.x86_64.rpm.zip
 
-before_install:
+install:
   - .travis/oracle/download.sh
   - unzip -j `find . -name oracle-xe*zip` -d stage *oracle-xe*rpm
   - find . -name oracle-xe*zip -exec rm {} \;
   - curl -o packer.zip https://releases.hashicorp.com/packer/1.1.3/packer_1.1.3_linux_amd64.zip
   - unzip packer.zip
 
-install:
+script:
   - ./packer validate oraclexe-ol6.json
   - ./packer validate oraclexe-ol7.json
-  - ./packer build oraclexe-ol6.json
-  - ./packer build oraclexe-ol7.json

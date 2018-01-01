@@ -1,0 +1,16 @@
+language: 
+sudo: required
+
+env:
+  global:
+    - ORACLE_FILE=stage/oracle-xe-11.2.0-1.0.x86_64.rpm.zip
+
+before_install:
+  - .travis/oracle/download.sh
+  - unzip stage/oracle-xe-11.2.0-1.0.x86_64.rpm.zip -d stage
+  - curl -o packer.zip https://releases.hashicorp.com/packer/1.1.3/packer_1.1.3_linux_amd64.zip
+  - unzip packer.zip
+
+install:
+  - ./packer validate oraclexe-ol6.json
+  - ./packer validate oraclexe-ol7.json

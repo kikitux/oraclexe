@@ -1,0 +1,52 @@
+{
+  "builders": [
+    {
+      "type": "docker",
+      "name": "oraclexe",
+      "image": "oraclelinux:6",
+      "run_command": [
+        "-d", "-i", "-P", "-v", "/tmp/container/ol6:/var/cache/yum", "--shm-size=1g",
+        "--memory=1g", "--memory-swap=2g","-t", "{{.Image}}", "/bin/sh", "-l"
+      ],
+      "commit": true
+    }
+  ],
+  "provisioners": [
+    {
+      "type": "shell-local",
+      "command": "mkdir -p /tmp/container/ol6"
+    },
+    {
+      "type": "file",
+      "source": "stage/",
+      "destination": "/u01"
+    },
+    {
+      "type": "shell",
+      "inline": [
+        "find /u01",
+        "mkdir -p /run/lock/subsys",
+        "yum install --setopt=tsflags='nodocs' -y deltarpm",
+        "yum install --setopt=tsflags='nodocs' -y libaio bc initscripts net-tools sudo unzip openssl",
+        "cat() { declare -A PROC=(['/proc/sys/kernel/shmmax']=4294967295 ['/proc/sys/kernel/shmmni']=4096 ['/proc/sys/kernel/shmall']=2097152 ['/proc/sys/fs/file-max']=6815744); [[ ${PROC[$1]} == '' ]] && /bin/cat $* || echo ${PROC[$1]}; }",
+        "export -f cat",
+        "yum localinstall -y /u01/oracle-xe-11.2.0-1.0.x86_64.rpm",
+        "unset -f cat",
+        "rm /u01/oracle-xe-11.2.0-1.0.x86_64.rpm",
+        "/etc/init.d/oracle-xe configure responseFile=/u01/xe.rsp",
+        "/etc/init.d/oracle-xe stop",
+        "mv /u01/start.sh /",
+        "chmod +x ./start.sh"
+      ]
+    }
+  ],
+  "post-processors": [
+    [
+      {
+        "type": "docker-tag",
+        "repository": "oraclexe",
+        "tag": "ol6"
+      }
+    ]
+  ]
+}

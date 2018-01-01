@@ -10,7 +10,10 @@ env:
 
 before_install:
   - .travis/oracle/download.sh
-  - find . -name ${ORACLE_FILE}
+  - find . -name ${ORACLE_FILE} -ls
+  - find . -name ${ORACLE_FILE} -exec md5sum {} \;
+  - unzip -l `find . -name ${ORACLE_FILE}`
+  - unzip -t `find . -name ${ORACLE_FILE}`
   - unzip `find . -name ${ORACLE_FILE}` -d stage ${ORACLE_FILE%%.zip}
   - curl -o packer.zip https://releases.hashicorp.com/packer/1.1.3/packer_1.1.3_linux_amd64.zip
   - unzip packer.zip

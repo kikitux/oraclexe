@@ -24,7 +24,7 @@
     {
       "type": "shell",
       "inline": [
-        "mkdir -p /run/lock/subsys",
+        "mkdir -p /run/lock/subsys /usr/share/info",
         "yum install --setopt=tsflags='nodocs' -y deltarpm",
         "yum install --setopt=tsflags='nodocs' -y libaio bc initscripts net-tools sudo unzip openssl",
         "cat() { declare -A PROC=(['/proc/sys/kernel/shmmax']=4294967295 ['/proc/sys/kernel/shmmni']=4096 ['/proc/sys/kernel/shmall']=2097152 ['/proc/sys/fs/file-max']=6815744); [[ ${PROC[$1]} == '' ]] && /bin/cat $* || echo ${PROC[$1]}; }",

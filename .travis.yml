@@ -19,3 +19,12 @@ install:
 script:
   - ./packer validate oraclexe-ol6.json
   - ./packer validate oraclexe-ol7.json
+  - ./packer build oraclexe-ol6.json
+  - ./packer build oraclexe-ol7.json
+
+after_script:
+  - export DATE=$(date +%y%m%d%H%M)
+  - docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD"
+  - docker tag oraclexe:ol6 kikitux/oracle:xe-ol6
+  - docker tag oraclexe:ol7 kikitux/oracle:xe-ol7
+  - docker push kikitux/oracle

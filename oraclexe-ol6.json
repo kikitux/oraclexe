@@ -24,7 +24,6 @@
     {
       "type": "shell",
       "inline": [
-        "find /u01",
         "mkdir -p /run/lock/subsys",
         "yum install --setopt=tsflags='nodocs' -y deltarpm",
         "yum install --setopt=tsflags='nodocs' -y libaio bc initscripts net-tools sudo unzip openssl",

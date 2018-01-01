@@ -6,6 +6,7 @@ services:
 env:
   global:
     - ORACLE_COOKIE=sqldev
+    - ORACLE_DOWNLOAD_DIR=stage
     - ORACLE_FILE=oracle11g/xe/oracle-xe-11.2.0-1.0.x86_64.rpm.zip
 
 before_install:

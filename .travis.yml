@@ -10,14 +10,12 @@ env:
 
 before_install:
   - .travis/oracle/download.sh
-  - find . -name oracle-xe*zip -ls
-  - find . -name oracle-xe*zip -exec md5sum {} \;
-  - unzip -l `find . -name oracle-xe*zip`
-  - unzip -t `find . -name oracle-xe*zip`
-  - unzip `find . -name oracle-xe*zip` -j -d stage oracle-xe*rpm
+  - unzip -j `find . -name oracle-xe*zip` -d stage *oracle-xe*rpm
   - curl -o packer.zip https://releases.hashicorp.com/packer/1.1.3/packer_1.1.3_linux_amd64.zip
   - unzip packer.zip
 
 install:
   - ./packer validate oraclexe-ol6.json
   - ./packer validate oraclexe-ol7.json
+  - ./packer build oraclexe-ol6.json
+  - ./packer build oraclexe-ol7.json
